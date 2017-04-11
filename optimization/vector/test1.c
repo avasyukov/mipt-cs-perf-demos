@@ -47,8 +47,7 @@ void process(vec_t *v, data_t *dest)
 int main()
 {
 	vec_t *vector = init(SIZE);
-	data_t *result;
-	process(vector, result);
-	printf("Res: %lf\n", result);
+	data_t result;
+	process(vector, &result);
 	return 0;
 }
