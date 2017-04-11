@@ -63,5 +63,6 @@ int main()
 	vec_t *vector = init(SIZE);
 	data_t result;
 	process(vector, &result);
+	printf("Res = %f\n", result);
 	return 0;
 }
