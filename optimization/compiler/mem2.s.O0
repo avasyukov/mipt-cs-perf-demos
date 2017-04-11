@@ -1,0 +1,176 @@
+	.file	"mem2.c"
+	.intel_syntax noprefix
+	.text
+	.globl	sum_rows
+	.type	sum_rows, @function
+sum_rows:
+.LFB0:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	mov	QWORD PTR [rbp-40], rdi
+	mov	QWORD PTR [rbp-48], rsi
+	mov	QWORD PTR [rbp-56], rdx
+	mov	QWORD PTR [rbp-8], 0
+	jmp	.L2
+.L5:
+	mov	eax, 0
+	mov	QWORD PTR [rbp-24], rax
+	mov	QWORD PTR [rbp-16], 0
+	jmp	.L3
+.L4:
+	mov	rax, QWORD PTR [rbp-8]
+	imul	rax, QWORD PTR [rbp-56]
+	mov	rdx, rax
+	mov	rax, QWORD PTR [rbp-16]
+	add	rax, rdx
+	lea	rdx, [0+rax*8]
+	mov	rax, QWORD PTR [rbp-40]
+	add	rax, rdx
+	movsd	xmm0, QWORD PTR [rax]
+	movsd	xmm1, QWORD PTR [rbp-24]
+	addsd	xmm1, xmm0
+	movq	rax, xmm1
+	mov	QWORD PTR [rbp-24], rax
+	add	QWORD PTR [rbp-16], 1
+.L3:
+	mov	rax, QWORD PTR [rbp-16]
+	cmp	rax, QWORD PTR [rbp-56]
+	jl	.L4
+	mov	rax, QWORD PTR [rbp-8]
+	lea	rdx, [0+rax*8]
+	mov	rax, QWORD PTR [rbp-48]
+	add	rdx, rax
+	mov	rax, QWORD PTR [rbp-24]
+	mov	QWORD PTR [rdx], rax
+	add	QWORD PTR [rbp-8], 1
+.L2:
+	mov	rax, QWORD PTR [rbp-8]
+	cmp	rax, QWORD PTR [rbp-56]
+	jl	.L5
+	pop	rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	sum_rows, .-sum_rows
+	.section	.rodata
+.LC1:
+	.string	"%f "
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB1:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	sub	rsp, 912
+	mov	DWORD PTR [rbp-4], 0
+	jmp	.L7
+.L8:
+	pxor	xmm1, xmm1
+	cvtsi2sd	xmm1, DWORD PTR [rbp-4]
+	movq	rax, xmm1
+	mov	edx, DWORD PTR [rbp-4]
+	movsx	rdx, edx
+	mov	QWORD PTR [rbp-896+rdx*8], rax
+	add	DWORD PTR [rbp-4], 1
+.L7:
+	cmp	DWORD PTR [rbp-4], 9
+	jle	.L8
+	mov	DWORD PTR [rbp-4], 0
+	jmp	.L9
+.L12:
+	mov	DWORD PTR [rbp-8], 0
+	jmp	.L10
+.L11:
+	mov	eax, DWORD PTR [rbp-8]
+	movsx	rcx, eax
+	mov	eax, DWORD PTR [rbp-4]
+	movsx	rdx, eax
+	mov	rax, rdx
+	sal	rax, 2
+	add	rax, rdx
+	add	rax, rax
+	lea	rdx, [rax+rcx]
+	mov	eax, 0
+	mov	QWORD PTR [rbp-816+rdx*8], rax
+	add	DWORD PTR [rbp-8], 1
+.L10:
+	cmp	DWORD PTR [rbp-8], 9
+	jle	.L11
+	add	DWORD PTR [rbp-4], 1
+.L9:
+	cmp	DWORD PTR [rbp-4], 9
+	jle	.L12
+	lea	rsi, [rbp-896]
+	lea	rax, [rbp-816]
+	mov	ecx, 10
+	mov	edx, 0
+	mov	rdi, rax
+	mov	eax, 0
+	call	set_row
+	mov	DWORD PTR [rbp-4], 0
+	jmp	.L13
+.L14:
+	mov	eax, DWORD PTR [rbp-4]
+	cdqe
+	mov	rax, QWORD PTR [rbp-896+rax*8]
+	mov	QWORD PTR [rbp-904], rax
+	movsd	xmm0, QWORD PTR [rbp-904]
+	mov	edi, OFFSET FLAT:.LC1
+	mov	eax, 1
+	call	printf
+	add	DWORD PTR [rbp-4], 1
+.L13:
+	cmp	DWORD PTR [rbp-4], 9
+	jle	.L14
+	mov	edi, 10
+	call	putchar
+	mov	DWORD PTR [rbp-4], 0
+	jmp	.L15
+.L18:
+	mov	DWORD PTR [rbp-8], 0
+	jmp	.L16
+.L17:
+	mov	eax, DWORD PTR [rbp-8]
+	movsx	rcx, eax
+	mov	eax, DWORD PTR [rbp-4]
+	movsx	rdx, eax
+	mov	rax, rdx
+	sal	rax, 2
+	add	rax, rdx
+	add	rax, rax
+	add	rax, rcx
+	mov	rax, QWORD PTR [rbp-816+rax*8]
+	mov	QWORD PTR [rbp-904], rax
+	movsd	xmm0, QWORD PTR [rbp-904]
+	mov	edi, OFFSET FLAT:.LC1
+	mov	eax, 1
+	call	printf
+	add	DWORD PTR [rbp-8], 1
+.L16:
+	cmp	DWORD PTR [rbp-8], 9
+	jle	.L17
+	mov	edi, 10
+	call	putchar
+	add	DWORD PTR [rbp-4], 1
+.L15:
+	cmp	DWORD PTR [rbp-4], 9
+	jle	.L18
+	mov	eax, 0
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE1:
+	.size	main, .-main
+	.ident	"GCC: (GNU) 4.9.2 20150212 (Red Hat 4.9.2-6)"
+	.section	.note.GNU-stack,"",@progbits

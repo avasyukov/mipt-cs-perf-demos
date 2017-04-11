@@ -1,0 +1,156 @@
+	.file	"mem1.c"
+	.intel_syntax noprefix
+	.section	.text.unlikely,"ax",@progbits
+.LCOLDB1:
+	.text
+.LHOTB1:
+	.p2align 4,,15
+	.globl	sum_rows
+	.type	sum_rows, @function
+sum_rows:
+.LFB11:
+	.cfi_startproc
+	test	rdx, rdx
+	jle	.L1
+	sal	rdx, 3
+	pxor	xmm1, xmm1
+	lea	rcx, [rsi+rdx]
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	lea	rax, [rdx+rdi]
+	movapd	xmm0, xmm1
+	mov	QWORD PTR [rsi], 0
+	.p2align 4,,10
+	.p2align 3
+.L3:
+	addsd	xmm0, QWORD PTR [rdi]
+	add	rdi, 8
+	cmp	rdi, rax
+	movsd	QWORD PTR [rsi], xmm0
+	jne	.L3
+	add	rsi, 8
+	cmp	rsi, rcx
+	jne	.L4
+.L1:
+	rep ret
+	.cfi_endproc
+.LFE11:
+	.size	sum_rows, .-sum_rows
+	.section	.text.unlikely
+.LCOLDE1:
+	.text
+.LHOTE1:
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC2:
+	.string	"%f "
+	.section	.text.unlikely
+.LCOLDB3:
+	.section	.text.startup,"ax",@progbits
+.LHOTB3:
+	.p2align 4,,15
+	.globl	main
+	.type	main, @function
+main:
+.LFB12:
+	.cfi_startproc
+	push	r13
+	.cfi_def_cfa_offset 16
+	.cfi_offset 13, -16
+	push	r12
+	.cfi_def_cfa_offset 24
+	.cfi_offset 12, -24
+	xor	eax, eax
+	push	rbp
+	.cfi_def_cfa_offset 32
+	.cfi_offset 6, -32
+	push	rbx
+	.cfi_def_cfa_offset 40
+	.cfi_offset 3, -40
+	sub	rsp, 888
+	.cfi_def_cfa_offset 928
+	.p2align 4,,10
+	.p2align 3
+.L10:
+	pxor	xmm0, xmm0
+	cvtsi2sd	xmm0, eax
+	movsd	QWORD PTR [rsp+rax*8], xmm0
+	add	rax, 1
+	cmp	rax, 10
+	jne	.L10
+	lea	rbx, [rsp+80]
+	lea	r12, [rsp+880]
+	mov	rax, rbx
+	.p2align 4,,10
+	.p2align 3
+.L11:
+	lea	rdx, [rax+80]
+	.p2align 4,,10
+	.p2align 3
+.L12:
+	mov	QWORD PTR [rax], 0
+	add	rax, 8
+	cmp	rax, rdx
+	jne	.L12
+	cmp	r12, rax
+	jne	.L11
+	lea	rdi, [rsp+80]
+	lea	r13, [rsp+80]
+	mov	ecx, 10
+	xor	edx, edx
+	mov	rsi, rsp
+	xor	eax, eax
+	mov	rbp, rsp
+	call	set_row
+	.p2align 4,,10
+	.p2align 3
+.L14:
+	movsd	xmm0, QWORD PTR [rbp+0]
+	mov	edi, OFFSET FLAT:.LC2
+	mov	eax, 1
+	add	rbp, 8
+	call	printf
+	cmp	rbp, r13
+	jne	.L14
+	mov	edi, 10
+	call	putchar
+	.p2align 4,,10
+	.p2align 3
+.L15:
+	lea	rbp, [rbx+80]
+	.p2align 4,,10
+	.p2align 3
+.L16:
+	movsd	xmm0, QWORD PTR [rbx]
+	mov	edi, OFFSET FLAT:.LC2
+	mov	eax, 1
+	add	rbx, 8
+	call	printf
+	cmp	rbp, rbx
+	jne	.L16
+	mov	edi, 10
+	mov	rbx, rbp
+	call	putchar
+	cmp	rbp, r12
+	jne	.L15
+	add	rsp, 888
+	.cfi_def_cfa_offset 40
+	xor	eax, eax
+	pop	rbx
+	.cfi_def_cfa_offset 32
+	pop	rbp
+	.cfi_def_cfa_offset 24
+	pop	r12
+	.cfi_def_cfa_offset 16
+	pop	r13
+	.cfi_def_cfa_offset 8
+	ret
+	.cfi_endproc
+.LFE12:
+	.size	main, .-main
+	.section	.text.unlikely
+.LCOLDE3:
+	.section	.text.startup
+.LHOTE3:
+	.ident	"GCC: (GNU) 4.9.2 20150212 (Red Hat 4.9.2-6)"
+	.section	.note.GNU-stack,"",@progbits

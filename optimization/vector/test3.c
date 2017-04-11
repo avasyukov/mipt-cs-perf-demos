@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 1000*1000*1000
+#define IDENT 1
+#define OP *
+#define data_t double
+
+typedef struct{
+	long int len;
+	data_t *data;
+} vec_t;
+
+vec_t *init(long int size)
+{
+	data_t *data = (data_t*)malloc(size*sizeof(data_t));
+	vec_t *vec = (vec_t*)malloc(sizeof(vec_t));
+	vec->len = size;
+	vec->data = data;
+	return vec;
+}
+
+double get_vec_element(vec_t *vec, long int idx, data_t *val)
+{
+	if (idx < 0 || idx >= vec->len)
+		return 0;
+	*val = vec->data[idx];
+	return 1;
+}
+
+long int vec_length(vec_t *vec)
+{
+	return vec->len;
+}
+
+data_t* get_vec_start(vec_t* vec)
+{
+	return vec->data;
+}
+
+void process(vec_t *v, data_t *dest)
+{
+	int length = vec_length(v);
+	int limit = length-1;
+	data_t *d = get_vec_start(v);
+	data_t x0 = IDENT;
+	data_t x1 = IDENT;
+	int i;
+	/* Учёт 2-х элементов за раз */
+	for (i = 0; i < limit; i+=2) {
+		x0 = x0 OP d[i];
+		x1 = x1 OP d[i+1];
+	}
+	/* Учёт оставшихся элементов */
+	for (; i < length; i++) {
+		x0 = x0 OP d[i];
+	}
+	*dest = x0 OP x1;
+}
+
+int main()
+{
+	vec_t *vector = init(SIZE);
+	data_t *result;
+	process(vector, result);
+	return 0;
+}

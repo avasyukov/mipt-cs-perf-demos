@@ -1,0 +1,53 @@
+	.file	"sum1.c"
+	.intel_syntax noprefix
+	.section	.text.unlikely,"ax",@progbits
+.LCOLDB0:
+	.text
+.LHOTB0:
+	.p2align 4,,15
+	.globl	sum
+	.type	sum, @function
+sum:
+.LFB11:
+	.cfi_startproc
+	sub	rsi, 1
+	imul	rsi, rcx
+	lea	r8, [rsi+rcx*2]
+	add	rsi, rdx
+	movsd	xmm0, QWORD PTR [rdi+rsi*8]
+	mov	rax, r8
+	sub	rax, rcx
+	add	rax, rdx
+	add	rdx, r8
+	addsd	xmm0, QWORD PTR [rdi+rdx*8]
+	addsd	xmm0, QWORD PTR [rdi-8+rax*8]
+	addsd	xmm0, QWORD PTR [rdi+8+rax*8]
+	ret
+	.cfi_endproc
+.LFE11:
+	.size	sum, .-sum
+	.section	.text.unlikely
+.LCOLDE0:
+	.text
+.LHOTE0:
+	.section	.text.unlikely
+.LCOLDB1:
+	.section	.text.startup,"ax",@progbits
+.LHOTB1:
+	.p2align 4,,15
+	.globl	main
+	.type	main, @function
+main:
+.LFB12:
+	.cfi_startproc
+	xor	eax, eax
+	ret
+	.cfi_endproc
+.LFE12:
+	.size	main, .-main
+	.section	.text.unlikely
+.LCOLDE1:
+	.section	.text.startup
+.LHOTE1:
+	.ident	"GCC: (GNU) 4.9.2 20150212 (Red Hat 4.9.2-6)"
+	.section	.note.GNU-stack,"",@progbits
