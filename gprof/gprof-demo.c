@@ -17,7 +17,8 @@ void func1(void)
 
 	for(i = 0; i < 0xffffffff; i++);
 
-	new_func1();
+	for(i = 0; i < 4; i++)
+		new_func1();
 
 	return;
 }
