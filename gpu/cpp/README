@@ -1,0 +1,1 @@
+nvcc -O2 -Xptxas -O2 -Xcompiler -O2 smth.cu
